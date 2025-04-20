@@ -9,7 +9,7 @@ export default function GeneralSettingsScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Idiomas</Text>
+        <Text style={styles.sectionTitle}>Distância</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Unidade de Distância</Text>
           <View style={styles.switchGroup}>
@@ -21,7 +21,7 @@ export default function GeneralSettingsScreen() {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Percursos</Text>
+        <Text style={styles.sectionTitle}>Gerais</Text>
 
         <View style={styles.row}>
           <Text style={styles.label}>Impedir autoblqueio</Text>

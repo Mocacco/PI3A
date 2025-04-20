@@ -33,15 +33,16 @@ const styles = StyleSheet.create({
     color: '#333'
   },
   button: {
-    backgroundColor: 'black',
-    padding: 15,
-    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20
+    paddingVertical: 20,
+    paddingHorizontal: 15,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#ddd',
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: '#000',
     fontSize: 16
   },
   optionItem: {

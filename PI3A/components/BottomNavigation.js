@@ -24,7 +24,7 @@ export default function BottomNavigation() {
       options={{ tabBarIcon: () => <Icon name="home-outline" size={20} /> }}
     />
     <Tab.Screen
-      name="Lista"
+      name="Lista de locais"
       component={LocationsListScreen}
       options={{ tabBarIcon: () => <Icon name="list-outline" size={20} /> }}
     />
