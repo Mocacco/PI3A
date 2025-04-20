@@ -1,15 +1,14 @@
-// App.js
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import BottomNavigation from './components/BottomNavigation';
-import SignInScreen from './screens/SignInScreen';
-import SignUpScreen from './screens/SignUpScreen';
+import AuthStack from './routes/AuthSrack';
+import AppStack from './routes/AppStack';
+import { useState } from 'react';
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
-     <NavigationContainer>
-       <BottomNavigation />
-     </NavigationContainer>
+    <NavigationContainer>
+      {isAuthenticated ? <AppStack /> : <AuthStack />}
+    </NavigationContainer>
   );
 }
-

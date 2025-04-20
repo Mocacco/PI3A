@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import LocationsListScreen from '../screens/LocationsListScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ConfigStack from '../screens/ConfigStack'; // <-- novo import
+import ConfigStack from '../routes/ConfigStack'; // <-- novo import
 
 const Tab = createBottomTabNavigator();
 

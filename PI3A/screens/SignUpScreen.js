@@ -1,13 +1,10 @@
 import React from "react";
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { View, TextInput, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignUpScreen() {
+  const navigation = useNavigation();
+  
   return (
     <View style={styles.loginContainer}>
       <View style={styles.loginBox}>
@@ -18,21 +15,22 @@ export default function SignUpScreen() {
           placeholderTextColor="#4d4d4d"
           keyboardType="email-address"
           autoCapitalize="none"
-        ></TextInput>
+        />
         <TextInput
           style={styles.input}
           placeholder="Password"
           placeholderTextColor="#4d4d4d"
           secureTextEntry={true}
-        ></TextInput>
+        />
         <TextInput
           style={styles.input}
           placeholder="Phone"
           placeholderTextColor="#4d4d4d"
           keyboardType="phone-pad"
           maxLength={11}
-        ></TextInput>
-        <TouchableOpacity style={styles.loginButton}>
+        />
+        <TouchableOpacity style={styles.loginButton}onPress={() => navigation.navigate('SignIn')}>
+          
           <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>
             Sign up
           </Text>
@@ -62,7 +60,7 @@ export default function SignUpScreen() {
         <Text style={{ color: "#fff", fontSize: 16 }}>
           Already have an account?
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
           <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>
             Sign in
           </Text>
@@ -71,6 +69,8 @@ export default function SignUpScreen() {
     </View>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   loginContainer: {
