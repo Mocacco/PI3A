@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 export default function BottomNavigation() {
   return (
   <Tab.Navigator
-    initialRouteName="home"
+    initialRouteName="Home"
      >
     <Tab.Screen
       name="Configurações"
@@ -19,7 +19,7 @@ export default function BottomNavigation() {
       options={{ tabBarIcon: () => <Icon name="settings-outline" size={20} /> }}
     />
     <Tab.Screen
-      name="home"
+      name="Home"
       component={HomeScreen}
       options={{ tabBarIcon: () => <Icon name="home-outline" size={20} /> }}
     />
