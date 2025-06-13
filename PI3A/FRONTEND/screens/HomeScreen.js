@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  View, TextInput, StyleSheet, ActivityIndicator,
-  Alert, FlatList, Text, TouchableOpacity, Keyboard
+  View, StyleSheet, ActivityIndicator,
+  Alert, Keyboard
 } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { v4 as uuidv4 } from 'uuid';
+import SearchBar from '../components/SearchBar';
 
 export default function HomeScreen() {
-  const [searchText, setSearchText] = useState('');
-  const [autocompleteSuggestions, setAutocompleteSuggestions] = useState([]);
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [directions, setDirections] = useState(null);
   const [loading, setLoading] = useState(false);
   const [location, setLocation] = useState(null);
-  const [isSettingOrigin, setIsSettingOrigin] = useState(true); // Alternador origem/destino
+  const [isSettingOrigin, setIsSettingOrigin] = useState(true);
   const sessionTokenRef = useRef(uuidv4());
   const mapRef = useRef(null);
   const BASE_URL = 'http://10.0.2.2:3000';
@@ -33,31 +32,7 @@ export default function HomeScreen() {
     })();
   }, []);
 
-  useEffect(() => {
-    const delayDebounce = setTimeout(async () => {
-      if (!searchText.trim()) {
-        setAutocompleteSuggestions([]);
-        return;
-      }
-
-      try {
-        const loc = location
-          ? `${location.coords.latitude},${location.coords.longitude}`
-          : '';
-        const res = await fetch(`${BASE_URL}/api/autocomplete-places?input=${encodeURIComponent(searchText)}&sessionToken=${sessionTokenRef.current}&location=${loc}`);
-        const data = await res.json();
-        setAutocompleteSuggestions(data);
-      } catch (err) {
-        console.error('Erro no autocomplete:', err);
-      }
-    }, 300);
-
-    return () => clearTimeout(delayDebounce);
-  }, [searchText, location]);
-
   const handleSuggestionPress = async (suggestion) => {
-    setSearchText(suggestion.description);
-    setAutocompleteSuggestions([]);
     Keyboard.dismiss();
 
     try {
@@ -118,50 +93,16 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        placeholder={`Pesquise ${isSettingOrigin ? 'a origem' : 'o destino'}...`}
-        style={styles.input}
-        value={searchText}
-        onChangeText={setSearchText}
-        editable={!loading}
+      <SearchBar
+        isSettingOrigin={isSettingOrigin}
+        setIsSettingOrigin={setIsSettingOrigin}
+        handleSuggestionPress={handleSuggestionPress}
+        location={location}
+        sessionTokenRef={sessionTokenRef}
+        BASE_URL={BASE_URL}
+        loading={loading}
+        handleGetDirections={handleGetDirections}
       />
-
-      <View style={styles.toggleContainer}>
-        <TouchableOpacity
-          style={[styles.toggleButton, isSettingOrigin && styles.activeButton]}
-          onPress={() => setIsSettingOrigin(true)}
-        >
-          <Text style={styles.toggleText}>Origem</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.toggleButton, !isSettingOrigin && styles.activeButton]}
-          onPress={() => setIsSettingOrigin(false)}
-        >
-          <Text style={styles.toggleText}>Destino</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.routeButton}
-          onPress={handleGetDirections}
-        >
-          <Text style={styles.routeText}>Traçar Rota</Text>
-        </TouchableOpacity>
-      </View>
-
-      {autocompleteSuggestions.length > 0 && (
-        <FlatList
-          data={autocompleteSuggestions}
-          keyExtractor={(item) => item.place_id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.suggestionItem}
-              onPress={() => handleSuggestionPress(item)}
-            >
-              <Text style={styles.suggestionText}>{item.description}</Text>
-            </TouchableOpacity>
-          )}
-          style={styles.autocompleteList}
-        />
-      )}
 
       {loading && (
         <View style={styles.loadingOverlay}>
@@ -212,39 +153,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  input: {
-    position: 'absolute', zIndex: 2, top: 40, left: 20, right: 20,
-    backgroundColor: 'white', padding: 10, borderRadius: 8, elevation: 3
-  },
-  toggleContainer: {
-    flexDirection: 'row', position: 'absolute', zIndex: 3, top: 100, left: 20, right: 20,
-    justifyContent: 'space-between', alignItems: 'center'
-  },
-  toggleButton: {
-    flex: 1, backgroundColor: '#eee', padding: 10, borderRadius: 6, marginHorizontal: 5
-  },
-  activeButton: {
-    backgroundColor: '#4CAF50'
-  },
-  toggleText: {
-    textAlign: 'center', fontWeight: 'bold', color: '#fff'
-  },
-  routeButton: {
-    backgroundColor: '#2196F3', padding: 10, borderRadius: 6
-  },
-  routeText: {
-    color: 'white', fontWeight: 'bold'
-  },
-  autocompleteList: {
-    position: 'absolute', zIndex: 2, top: 90, left: 20, right: 20,
-    backgroundColor: 'white', borderRadius: 8, elevation: 3, maxHeight: 200
-  },
-  suggestionItem: {
-    padding: 10, borderBottomWidth: 1, borderBottomColor: '#eee'
-  },
-  suggestionText: {
-    fontSize: 16
-  },
   map: {
     ...StyleSheet.absoluteFillObject
   },
