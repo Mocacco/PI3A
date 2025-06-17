@@ -1,62 +1,118 @@
-import React from "react";
-import { View, TextInput, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Snackbar, Provider as PaperProvider } from "react-native-paper";
+import API_URL from "../API_URL";
 
-export default function SignInScreen() {
+export default function SignIn() {
   const navigation = useNavigation();
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  function showSnackbar(message) {
+    setSnackbarMessage(message);
+    setSnackbarVisible(true);
+  }
+
+  async function handleSignIn() {
+    if (!email || !password) {
+      showSnackbar("Preencha email e senha.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.token) {
+        showSnackbar("Login realizado!");
+        setTimeout(() => navigation.navigate("MainApp"), 1500);
+      } else {
+        showSnackbar(data.message || "Credenciais inválidas.");
+      }
+    } catch (err) {
+      showSnackbar("Erro de conexão com o servidor.");
+      console.log(err);
+    }
+  }
+
   return (
-    <View style={styles.loginContainer}>
-      <View style={styles.loginBox}>
-        <Text style={{ fontWeight: "bold", fontSize: 40 }}>Sign in</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#4d4d4d"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#4d4d4d"
-          secureTextEntry={true}
-        />
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={() => navigation.replace("MainApp")} 
+    <PaperProvider>
+      <View style={styles.loginContainer}>
+        <View style={styles.loginBox}>
+          <Text style={{ fontWeight: "bold", fontSize: 40 }}>Sign in</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#4d4d4d"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#4d4d4d"
+            secureTextEntry={true}
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity style={styles.loginButton} onPress={handleSignIn}>
+            <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>
+              Sign in
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={{ color: "#4d4d4d", fontWeight: "bold" }}>
+              Forgot your password?
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.alterLogin}>
+          <TouchableOpacity style={styles.alterLoginButton}>
+            <Text style={{ color: "#4d4d4d", fontSize: 16 }}>Google</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.alterLoginButton}>
+            <Text style={{ color: "#4d4d4d", fontSize: 16 }}>Facebook</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.createAccount}>
+          <Text style={{ color: "#fff", fontSize: 16 }}>
+            Don't have an account?
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+            <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>
+              Sign up
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <Snackbar
+          visible={snackbarVisible}
+          onDismiss={() => setSnackbarVisible(false)}
+          duration={3000}
+          style={{ backgroundColor: "#323232" }}
         >
-          <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>
-            Sign in
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={{ color: "#4d4d4d", fontWeight: "bold" }}>
-            Forgot your password?
-          </Text>
-        </TouchableOpacity>
+          {snackbarMessage}
+        </Snackbar>
       </View>
-
-      <View style={styles.alterLogin}>
-        <TouchableOpacity style={styles.alterLoginButton}>
-          <Text style={{ color: "#4d4d4d", fontSize: 16 }}>Google</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.alterLoginButton}>
-          <Text style={{ color: "#4d4d4d", fontSize: 16 }}>Facebook</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.createAccount}>
-        <Text style={{ color: "#fff", fontSize: 16 }}>
-          Don't have an account?
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-          <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 16 }}>
-            Sign up
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </PaperProvider>
   );
 }
 
