@@ -24,7 +24,7 @@ export default function GeneralSettingsScreen() {
         <Text style={styles.sectionTitle}>Gerais</Text>
 
         <View style={styles.row}>
-          <Text style={styles.label}>Impedir autoblqueio</Text>
+          <Text style={styles.label}>Impedir autobloqueio</Text>
           <Switch value={autoLock} onValueChange={setAutoLock} />
         </View>
 

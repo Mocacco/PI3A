@@ -16,6 +16,7 @@ import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 import SearchBar from '../components/SearchBar'; // Seu componente SearchBar
 import API_URL from '../API_URL';
+import { useRoute } from '@react-navigation/native';
 
 // Implementação manual de UUIDv4 (MOVIDA PARA CIMA, FORA DO COMPONENTE)
 function generateUUID() {

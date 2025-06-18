@@ -13,13 +13,13 @@ export default function ConfigStack() {
     <Stack.Navigator>
       <Stack.Screen name="Config" component={ConfigScreen} options={{ headerShown: false}}/>
       <Stack.Screen name="Configurações Gerais" component={GeneralSettingsScreen} />
-      <Stack.Screen name="Prvacidade e Segurança" component={PrivacySecurityScreen} />
+      <Stack.Screen name="Privacidade e Segurança" component={PrivacySecurityScreen} />
       <Stack.Screen name="ChangePassScreen" component={ChangePassScreen} options={{ title: 'Alterar Senha' }} />
       <Stack.Screen name="LanguageSelection" component={LanguageSelectionScreen}options={{ title: 'Selecionar Idioma' }}/>
       <Stack.Screen 
         name="RoutesSettings" 
         component={RouteSettingsScreen}
-        options={{ title: 'Configurações de Percurso' }}
+        options={{ title: 'Configurações de Rotas' }}
       />
     </Stack.Navigator>
   );

@@ -1,19 +1,48 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import API_URL from '../API_URL';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ChangePassScreen({ navigation }) {
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+
+    if (!currentPass || !newPass || !confirmPass) {
+      Alert.alert('Erro', 'Todos os campos são obrigatórios');
+      return;
+    }
+
     if (newPass !== confirmPass) {
       Alert.alert('Erro', 'As senhas não coincidem');
       return;
     }
-    // Lógica para alterar senha
-    Alert.alert('Sucesso', 'Senha alterada com sucesso');
-    navigation.goBack();
+
+    try {
+      const response = await fetch(`${API_URL}:3001/auth/change-password`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({
+          currentPassword: currentPass,
+          newPassword: newPass
+        })
+      });
+
+      if (response.ok) {
+        Alert.alert('Sucesso', 'Senha alterada com sucesso');
+        navigation.goBack();
+      } else {
+        Alert.alert('Erro', 'Erro ao alterar a senha');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Erro de conexão com o servidor');
+    }
   };
 
   return (

@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Snackbar, Provider as PaperProvider } from "react-native-paper";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import API_URL from "../API_URL";
 
 export default function SignIn() {
@@ -38,9 +39,14 @@ export default function SignIn() {
       const data = await response.json();
 
       if (response.ok && data.token) {
+        await AsyncStorage.setItem('userToken', data.token);
         showSnackbar("Login realizado!");
-        setTimeout(() => navigation.navigate("MainApp"), 1500);
-      } else {
+        setTimeout(() => 
+          navigation.reset({
+              index: 0,
+              routes: [{ name: 'MainApp' }]
+          })
+        )} else {
         showSnackbar(data.message || "Credenciais inválidas.");
       }
     } catch (err) {
