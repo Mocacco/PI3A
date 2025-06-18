@@ -11,5 +11,5 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 
 app.listen(3001, "0.0.0.0", () => {
-  console.log("Servidor rodando em http://0.0.0.0:3000");
+  console.log("Servidor rodando em http://0.0.0.0:3001");
 });

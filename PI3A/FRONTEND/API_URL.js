@@ -6,4 +6,4 @@ const hostUri = Constants.expoConfig?.hostUri || Constants.expoConfig?.hostUri;
 // Se quiser adicionar fallback:
 const ip = hostUri?.split(":")[0] || "localhost";
 
-export default `http://${ip}:3001`;
+export default `http://${ip}`;

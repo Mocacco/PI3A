@@ -15,6 +15,7 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { Ionicons } from '@expo/vector-icons';
 import SearchBar from '../components/SearchBar'; // Seu componente SearchBar
+import API_URL from '../API_URL';
 
 // Implementação manual de UUIDv4 (MOVIDA PARA CIMA, FORA DO COMPONENTE)
 function generateUUID() {
@@ -46,7 +47,7 @@ const HomeScreen = () => {
     // Ajuste a URL base do seu backend conforme seu ambiente
     // Ex: 'http://10.0.2.2:3000' para emulador Android
     // Ex: 'http://192.168.1.6:3000' para dispositivo físico (se 192.168.1.6 for o IP do seu PC)
-    const BASE_URL = 'http://192.168.1.6:3000'; // <--- VERIFIQUE E AJUSTE ESTE IP
+    const BASE_URL = `${API_URL}:3000`; // <--- VERIFIQUE E AJUSTE ESTE IP
 
     // Efeito para obter permissão e a localização atual do usuário
     useEffect(() => {
