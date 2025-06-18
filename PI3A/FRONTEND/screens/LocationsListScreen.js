@@ -130,7 +130,7 @@ export default function LocationsListScreen() {
   };
 
   const goToMapWithPin = (location) => {
-    navigation.navigate('HomeScreen', {
+    navigation.navigate('Home', {
       destination: {
         name: location.name,
         latitude: location.latitude,
