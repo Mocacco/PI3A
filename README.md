@@ -36,6 +36,12 @@ npx expo start
 
 4. Leia o código QR com o aplicativo Expo Go no celular.
 
+5. Caso o SignUp dê algum bug use esse login pra testar o app
+```bash
+email:joao@email.com
+senha:Joao1234
+```
+
 ## Ideias do Projeto
 
 1. Ideia Inicial de Funcionalidade
